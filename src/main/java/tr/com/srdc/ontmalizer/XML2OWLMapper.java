@@ -26,9 +26,9 @@ import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFWriter;
 import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdfxml.xmloutput.impl.Basic;
 import org.apache.jena.util.iterator.ExtendedIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,8 +56,6 @@ public class XML2OWLMapper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XML2OWLMapper.class);
 
-    // Variables for parsing XML instance
-    private DocumentBuilderFactory dbf = null;
     private DocumentBuilder db = null;
     private Document document = null;
 
@@ -146,7 +144,8 @@ public class XML2OWLMapper {
      * @throws ParserConfigurationException
      */
     private void initDocumentBuilder() throws ParserConfigurationException {
-        dbf = DocumentBuilderFactory.newInstance();
+        // Variables for parsing XML instance
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         dbf.setIgnoringComments(true);
         db = dbf.newDocumentBuilder();
@@ -171,7 +170,7 @@ public class XML2OWLMapper {
         count = new HashMap<>();
         ResIterator it = ontology.listResourcesWithProperty(null);
         while (it.hasNext()) {
-            Resource resource = (Resource) it.next();
+            Resource resource = it.next();
             if (resource != null && resource.getURI() != null) {
                 count.put(resource.getURI(), 1);
             }
@@ -179,9 +178,7 @@ public class XML2OWLMapper {
 
         // Import all the namespace prefixes to the model
         Map<String, String> nsmap = ontology.getBaseModel().getNsPrefixMap();
-        Iterator<String> keys = nsmap.keySet().iterator();
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
+        for (String key : nsmap.keySet()) {
             // The default namespace (i.e. the null prefix) should always refer to baseURI in instances
             if (key.equals("")) {
                 model.setNsPrefix("", baseURI);
@@ -267,7 +264,7 @@ public class XML2OWLMapper {
 
             if (objectType != null) {
 
-                /**
+                /*
                  * The type of the element might be overridden with the use of
                  * xsi:type, if the original type of the element is abstract, or
                  * a superclass. Therefore, we have to be sure about the actual
@@ -275,7 +272,7 @@ public class XML2OWLMapper {
                  */
                 Element element = (Element) node;
                 String overriddenXsiType = element.getAttributeNS(Constants.XSI_NS, "type");
-                if (overriddenXsiType != null && !overriddenXsiType.equals("")) {
+                if (!overriddenXsiType.equals("")) {
                     String overriddenNS = null;
                     String overriddenType = null;
                     if (overriddenXsiType.contains(":")) {
@@ -310,6 +307,7 @@ public class XML2OWLMapper {
                 }
             }
 
+            assert objectType != null;
             traverseAttributes(node, object, objectType.getResource());
 
         } // This case is only valid for instances of mixed classes
@@ -321,7 +319,7 @@ public class XML2OWLMapper {
             // Check if mixed class
             Iterator<OntClass> it = mixedClasses.iterator();
             while (it.hasNext()) {
-                OntClass mixed = (OntClass) it.next();
+                OntClass mixed = it.next();
                 if (mixed.getURI().equals(subjectType.getURI())) {
                     break;
                 }
@@ -353,11 +351,11 @@ public class XML2OWLMapper {
         while (temp != null) {
             ExtendedIterator<OntClass> itres = temp.listSuperClasses();
             while (itres.hasNext()) {
-                OntClass rescl = (OntClass) itres.next();
+                OntClass rescl = itres.next();
                 if (rescl.isRestriction()) {
                     if (rescl.asRestriction().isAllValuesFromRestriction()) {
                         AllValuesFromRestriction avfres = rescl.asRestriction().asAllValuesFromRestriction();
-                        /**
+                        /*
                          * In some cases, a resource can be both an object and
                          * datatype property. If, at the same time the prefixes
                          * opprefix and dtpprefix are identical, then we have to
@@ -390,7 +388,7 @@ public class XML2OWLMapper {
 
             ExtendedIterator<OntClass> it = temp.listSuperClasses();
             while (it.hasNext()) {
-                OntClass superCl = (OntClass) it.next();
+                OntClass superCl = it.next();
                 if (!superCl.isRestriction() && !superCl.isEnumeratedClass()) {
                     queue.add(superCl);
                 }
@@ -407,7 +405,7 @@ public class XML2OWLMapper {
 
         if (uri.startsWith(XSDDatatype.XSD)) {
             result.setDatatype(true);
-            result.setResource(XSDUtil.getXSDResource(uri.substring(uri.lastIndexOf("#"), uri.length())));
+            result.setResource(XSDUtil.getXSDResource(uri.substring(uri.lastIndexOf("#"))));
         } else {
             OntClass cls = ontology.getOntClass(uri);
             if (cls != null && cls.getRDFType(true).getURI().equals(Constants.OWL_CLASS_URI)) {
@@ -435,39 +433,25 @@ public class XML2OWLMapper {
     /**
      * @param out
      * @param format - Output format may be one of these values;
-     * "RDF/XML","RDF/XML-ABBREV","N-TRIPLE","N3".
+     * "RDF/XML","RDF/XML-ABBREV","N-TRIPLE".
      */
     public void writeModel(OutputStream out, String format) {
-        if (format.equals("RDF/XML") || format.equals("RDF/XML-ABBREV")) {
-            // This part is to add xml:base attribute to the RDF/XML and RDF/XML-ABBREV output
-            RDFWriter writer = model.getWriter(format);
-            writer.setProperty("xmlbase", baseNS);
-            writer.write(model, out, baseURI);
-        } else {
-            model.write(out, format, baseURI);
-        }
+        model.write(out, format, baseURI);
     }
 
     /**
      * @param out
      * @param format - Output format may be one of these values;
-     * "RDF/XML","RDF/XML-ABBREV","N-TRIPLE","N3".
+     * "RDF/XML","RDF/XML-ABBREV","N-TRIPLE".
      */
     public void writeModel(Writer out, String format) {
-        if (format.equals("RDF/XML") || format.equals("RDF/XML-ABBREV")) {
-            // This part is to add xml:base attribute to the RDF/XML and RDF/XML-ABBREV output
-            RDFWriter writer = model.getWriter(format);
-            writer.setProperty("xmlbase", baseNS);
-            writer.write(model, out, baseURI);
-        } else {
-            model.write(out, format, baseURI);
-        }
+        model.write(out, format, baseURI);
     }
 
     /**
      * @param out
      * @param format - Output format may be one of these values;
-     * "RDF/XML","RDF/XML-ABBREV","N-TRIPLE","N3".
+     * "RDF/XML","RDF/XML-ABBREV","N-TRIPLE".
      */
     public void writeOntology(OutputStream out, String format) {
         ontology.write(out, format, null);

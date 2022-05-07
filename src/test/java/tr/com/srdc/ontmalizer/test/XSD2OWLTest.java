@@ -30,15 +30,13 @@ public class XSD2OWLTest {
         mapping.convertXSD2OWL();
 
         // This part prints the ontology to the specified file.
-        FileOutputStream ont;
-        try {
-            File f = new File("src/test/resources/output/cda-ontology.n3");
-            f.getParentFile().mkdirs();
-            ont = new FileOutputStream(f);
-            mapping.writeOntology(ont, "N3");
-            ont.close();
+        File f = new File("src/test/resources/output/cda-ontology.n3");
+        assert f.getParentFile().exists() || f.getParentFile().mkdirs();
+
+        try (FileOutputStream ont = new FileOutputStream(f)) {
+            mapping.writeOntology(ont, "N-TRIPLE"); // not "N3"
         } catch (Exception e) {
-            LOGGER.error("{}", e.getMessage());
+            LOGGER.error("createCDAOntology: {}", e.getMessage(), e);
         }
     }
 
@@ -52,15 +50,13 @@ public class XSD2OWLTest {
         mapping.convertXSD2OWL();
 
         // This part prints the ontology to the specified file.
-        FileOutputStream ont;
-        try {
-            File f = new File("src/test/resources/output/salus-cim-ontology.n3");
-            f.getParentFile().mkdirs();
-            ont = new FileOutputStream(f);
-            mapping.writeOntology(ont, "N3");
-            ont.close();
+        File f = new File("src/test/resources/output/salus-cim-ontology.n3");
+        assert f.getParentFile().exists() || f.getParentFile().mkdirs();
+
+        try (FileOutputStream ont = new FileOutputStream(f)) {
+            mapping.writeOntology(ont, "N-TRIPLE"); // not "N3"
         } catch (Exception e) {
-            LOGGER.error("{}", e.getMessage());
+            LOGGER.error("createSALUSCommonOntology: {}", e.getMessage(), e);
         }
     }
 
@@ -74,15 +70,13 @@ public class XSD2OWLTest {
         mapping.convertXSD2OWL();
 
         // This part prints the ontology to the specified file.
-        FileOutputStream ont;
-        try {
-            File f = new File("src/test/resources/output/test.n3");
-            f.getParentFile().mkdirs();
-            ont = new FileOutputStream(f);
-            mapping.writeOntology(ont, "N3");
-            ont.close();
+        File f = new File("src/test/resources/output/test.n3");
+        assert f.getParentFile().exists() || f.getParentFile().mkdirs();
+
+        try (FileOutputStream ont = new FileOutputStream(f)) {
+            mapping.writeOntology(ont, "N-TRIPLE"); // not "N3"
         } catch (Exception e) {
-            LOGGER.error("{}", e.getMessage());
+            LOGGER.error("createTestOntology: {}", e.getMessage(), e);
         }
     }
 
@@ -96,15 +90,13 @@ public class XSD2OWLTest {
         mapping.convertXSD2OWL();
 
         // This part prints the ontology to the specified file.
-        try {
-            File f = new File("src/test/resources/output/test.n3");
-            f.getParentFile().mkdirs();
-            Writer w = new FileWriter(f);
-            mapping.writeOntology(w, "N3");
-            w.close();
+        File f = new File("src/test/resources/output/test.n3");
+        assert f.getParentFile().exists() || f.getParentFile().mkdirs();
+
+        try (Writer w = new FileWriter(f)) {
+            mapping.writeOntology(w, "N-TRIPLE"); // not "N3"
         } catch (Exception e) {
-            LOGGER.error("{}", e.getMessage());
+            LOGGER.error("writerTest: {}", e.getMessage(), e);
         }
     }
-
 }

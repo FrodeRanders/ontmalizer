@@ -38,7 +38,6 @@ import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFList;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.OWL;
 import org.apache.jena.vocabulary.OWL2;
@@ -188,17 +187,17 @@ public class XSD2OWLMapper {
     public void convertXSD2OWL() {
         Iterator<XSSimpleType> simpleTypes = schema.iterateSimpleTypes();
         while (simpleTypes.hasNext()) {
-            convertSimpleType((XSSimpleType) simpleTypes.next(), null);
+            convertSimpleType(simpleTypes.next(), null);
         }
 
         Iterator<XSComplexType> complexTypes = schema.iterateComplexTypes();
         while (complexTypes.hasNext()) {
-            convertComplexType((XSComplexType) complexTypes.next(), null);
+            convertComplexType(complexTypes.next(), null);
         }
 
         Iterator<XSElementDecl> elements = schema.iterateElementDecls();
         while (elements.hasNext()) {
-            convertElement((XSElementDecl) elements.next(), null);
+            convertElement(elements.next(), null);
         }
 
         Iterator<XSModelGroupDecl> groups = schema.iterateModelGroupDecls();
@@ -208,7 +207,7 @@ public class XSD2OWLMapper {
 
         Iterator<XSAttGroupDecl> attGroups = schema.iterateAttGroupDecls();
         while (attGroups.hasNext()) {
-            convertAttributeGroup((XSAttGroupDecl) attGroups.next());
+            convertAttributeGroup(attGroups.next());
         }
 
         createDefaultTextPropertyForMixedClasses();
@@ -254,7 +253,7 @@ public class XSD2OWLMapper {
                         RDFS.Datatype,
                         parentURI + Constants.DATATYPE_SUFFIX);
 
-                /**
+                /*
                  * The following part adds equivalentClass to an enumarated
                  * class, if it is not added already. Like this:
                  *
@@ -459,9 +458,7 @@ public class XSD2OWLMapper {
                         1));
             }
 
-            Iterator<? extends XSAttributeUse> attributeUses = complex.getAttributeUses().iterator();
-            while (attributeUses.hasNext()) {
-                XSAttributeUse attributeUse = (XSAttributeUse) attributeUses.next();
+            for (XSAttributeUse attributeUse : complex.getAttributeUses()) {
                 convertAttribute(attributeUse, complexClass);
             }
         } else if (baseType.isComplexType()) {
@@ -512,16 +509,14 @@ public class XSD2OWLMapper {
                 complexClass.addSuperClass(ontology.createClass(baseURI));
             }
 
-            Iterator<? extends XSAttributeUse> attributeUses = complex.getDeclaredAttributeUses().iterator();
-            while (attributeUses.hasNext()) {
-                XSAttributeUse attributeUse = (XSAttributeUse) attributeUses.next();
+            for (XSAttributeUse attributeUse : complex.getDeclaredAttributeUses()) {
                 convertAttribute(attributeUse, complexClass);
             }
         }
 
         Iterator<? extends XSAttGroupDecl> attGroups = complex.iterateAttGroups();
         while (attGroups.hasNext()) {
-            XSAttGroupDecl attGroup = (XSAttGroupDecl) attGroups
+            XSAttGroupDecl attGroup = attGroups
                     .next();
             OntClass attgClass = ontology.createClass(getURI(attGroup));
             attgClass.addSubClass(complexClass);
@@ -570,7 +565,7 @@ public class XSD2OWLMapper {
             URI = mainURI + "#Class_" + attrLocalSimpleTypeCount;
         }
 
-        /**
+        /*
          * xsd:IDREFS, xsd:ENTITIES and xsd:NMTOKENS are sequence-valued
          * datatypes which do not fit the RDF datatype model.
          * http://mail-archives.apache.org/mod_mbox/jena-users/201206.mbox/%3CCAFq2biyPYPKt0mnsnEajqwrQjOYH_geaFbVXvOuVeeDVYDgs2A@mail.gmail.com%3E
@@ -722,7 +717,7 @@ public class XSD2OWLMapper {
 
         Iterator<? extends XSAttributeUse> attributes = attGroup.iterateAttributeUses();
         while (attributes.hasNext()) {
-            convertAttribute((XSAttributeUse) attributes.next(), attgClass);
+            convertAttribute(attributes.next(), attgClass);
         }
     }
 
@@ -757,7 +752,7 @@ public class XSD2OWLMapper {
     /**
      * @param out
      * @param format - Output format may be one of these values;
-     * "RDF/XML","RDF/XML-ABBREV","N-TRIPLE","N3".
+     * "RDF/XML","RDF/XML-ABBREV","N-TRIPLE".
      */
     public void writeOntology(OutputStream out, String format) {
         ontology.write(out, format, null);

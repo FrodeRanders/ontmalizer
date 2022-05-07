@@ -13,7 +13,7 @@ import tr.com.srdc.ontmalizer.helper.NamingUtil;
  * @author rahmivolkan
  */
 public class NamingUtilTest {
-    private static Locale defaultLocale = Locale.getDefault();
+    private static final Locale defaultLocale = Locale.getDefault();
     
 	@Test
 	public void testCreatePropertyName() {

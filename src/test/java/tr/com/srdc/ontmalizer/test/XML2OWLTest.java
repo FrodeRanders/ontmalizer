@@ -35,15 +35,13 @@ public class XML2OWLTest {
         generator.convertXML2OWL();
 
         // This part prints the RDF data model to the specified file.
-        try {
-            File f = new File("src/test/resources/output/salus-cda-instance.n3");
-            f.getParentFile().mkdirs();
-            FileOutputStream fout = new FileOutputStream(f);
-            generator.writeModel(fout, "N3");
-            fout.close();
+        File f = new File("src/test/resources/output/salus-cda-instance.n3");
+        assert f.getParentFile().exists() || f.getParentFile().mkdirs();
 
+        try (FileOutputStream fout = new FileOutputStream(f)) {
+            generator.writeModel(fout, "N-TRIPLE"); // not "N3"
         } catch (Exception e) {
-            LOGGER.error("{}", e.getMessage());
+            LOGGER.error("createCDAOntologyInstance: {}", e.getMessage(), e);
         }
     }
 
@@ -66,18 +64,15 @@ public class XML2OWLTest {
             generator.convertXML2OWL();
 
             // This part prints the RDF data model to the specified file.
-            try {
-                File f = new File("src/test/resources/output/first-prot/" + outName);
-                f.getParentFile().mkdirs();
-                FileOutputStream fout = new FileOutputStream(f);
-                generator.writeModel(fout, "N3");
-                fout.close();
+            File f = new File("src/test/resources/output/first-prot/" + outName);
+            assert f.getParentFile().exists() || f.getParentFile().mkdirs();
 
+            try (FileOutputStream fout = new FileOutputStream(f)){
+                generator.writeModel(fout, "N-TRIPLE"); // not "N3"
             } catch (Exception e) {
-                LOGGER.error("{}", e.getMessage());
+                LOGGER.error("createFirstPrototypeCDAInstances: {}", e.getMessage(), e);
             }
         }
-
     }
 
     @Test
@@ -94,15 +89,13 @@ public class XML2OWLTest {
         generator.convertXML2OWL();
 
         // This part prints the RDF data model to the specified file.
-        try {
-            File f = new File("src/test/resources/output/salus-cim-instance.n3");
-            f.getParentFile().mkdirs();
-            FileOutputStream fout = new FileOutputStream(f);
-            generator.writeModel(fout, "N3");
-            fout.close();
+        File f = new File("src/test/resources/output/salus-cim-instance.n3");
+        assert f.getParentFile().exists() || f.getParentFile().mkdirs();
 
+        try (FileOutputStream fout = new FileOutputStream(f)){
+            generator.writeModel(fout, "N-TRIPLE"); // not "N3"
         } catch (Exception e) {
-            LOGGER.error("{}", e.getMessage());
+            LOGGER.error("createSALUSCommonOntologyInstance: {}", e.getMessage(), e);
         }
     }
 
@@ -120,15 +113,13 @@ public class XML2OWLTest {
         generator.convertXML2OWL();
 
         // This part prints the RDF data model to the specified file.
-        try {
-            File f = new File("src/test/resources/output/salus-eligibility-instance.n3");
-            f.getParentFile().mkdirs();
-            FileOutputStream fout = new FileOutputStream(f);
-            generator.writeModel(fout, "N3");
-            fout.close();
+        File f = new File("src/test/resources/output/salus-eligibility-instance.n3");
+        assert f.getParentFile().exists() || f.getParentFile().mkdirs();
 
+        try (FileOutputStream fout = new FileOutputStream(f)) {
+            generator.writeModel(fout, "N-TRIPLE"); // not "N3"
         } catch (Exception e) {
-            LOGGER.error("{}", e.getMessage());
+            LOGGER.error("createSALUSEligibilityInstance: {}", e.getMessage(), e);
         }
     }
 
@@ -146,15 +137,13 @@ public class XML2OWLTest {
         generator.convertXML2OWL();
 
         // This part prints the RDF data model to the specified file.
-        try {
-            File f = new File("src/test/resources/output/test-instance.rdf");
-            f.getParentFile().mkdirs();
-            FileOutputStream fout = new FileOutputStream(f);
-            generator.writeModel(fout, "RDF/XML-ABBREV");
-            fout.close();
+        File f = new File("src/test/resources/output/test-instance.rdf");
+        assert f.getParentFile().exists() || f.getParentFile().mkdirs();
 
+        try (FileOutputStream fout = new FileOutputStream(f)) {
+            generator.writeModel(fout, "RDF/XML-ABBREV");
         } catch (Exception e) {
-            LOGGER.error("{}", e.getMessage());
+            LOGGER.error("createTestOntologyInstance: {}", e.getMessage(), e);
         }
     }
 
@@ -172,15 +161,13 @@ public class XML2OWLTest {
         generator.convertXML2OWL();
 
         // This part prints the RDF data model to the specified file.
-        try {
-            File f = new File("src/test/resources/output/test-instance.rdf");
-            f.getParentFile().mkdirs();
-            Writer writer = new FileWriter(f);
-            generator.writeModel(writer, "RDF/XML-ABBREV");
-            writer.close();
+        File f = new File("src/test/resources/output/test-instance.rdf");
+        assert f.getParentFile().exists() || f.getParentFile().mkdirs();
 
+        try (Writer writer = new FileWriter(f)) {
+            generator.writeModel(writer, "RDF/XML-ABBREV");
         } catch (Exception e) {
-            LOGGER.error("{}", e.getMessage());
+            LOGGER.error("testWriter: {}", e.getMessage(), e);
         }
     }
 }

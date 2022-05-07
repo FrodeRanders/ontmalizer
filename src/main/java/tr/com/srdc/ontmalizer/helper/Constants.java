@@ -27,9 +27,9 @@ public class Constants {
 	public static final String RDFS_TYPE_URI = "http://www.w3.org/2000/01/rdf-schema#Datatype";
 	public static final String OWL_CLASS_URI = "http://www.w3.org/2002/07/owl#Class";
 	
-	public static String ONTMALIZER_VALUE_PROP_NAME;
-	public static String ONTMALIZER_ENUMERATION_CLASS_NAME;
-	public static String ONTMALIZER_ENUMERATEDVALUE_CLASS_NAME;
+	public static final String ONTMALIZER_VALUE_PROP_NAME;
+	public static final String ONTMALIZER_ENUMERATION_CLASS_NAME;
+	public static final String ONTMALIZER_ENUMERATEDVALUE_CLASS_NAME;
 	
 	static {
 		ONTMALIZER_VALUE_PROP_NAME = ONTMALIZER_BASE_URI + "hasValue";
