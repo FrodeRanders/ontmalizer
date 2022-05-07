@@ -1,13 +1,12 @@
 package tr.com.srdc.ontmalizer.helper.test;
 
-import static org.junit.Assert.*;
+import org.junit.AfterClass;
+import org.junit.Test;
+import tr.com.srdc.ontmalizer.helper.NamingUtil;
 
 import java.util.Locale;
 
-import org.junit.AfterClass;
-import org.junit.Test;
-
-import tr.com.srdc.ontmalizer.helper.NamingUtil;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author rahmivolkan

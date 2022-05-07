@@ -3,14 +3,15 @@
  */
 package tr.com.srdc.ontmalizer.test;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.Writer;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tr.com.srdc.ontmalizer.XSD2OWLMapper;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.Writer;
 
 /**
  * @author Mustafa

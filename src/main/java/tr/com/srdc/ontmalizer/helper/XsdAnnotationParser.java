@@ -5,12 +5,7 @@ package tr.com.srdc.ontmalizer.helper;
 
 import com.sun.xml.xsom.parser.AnnotationContext;
 import com.sun.xml.xsom.parser.AnnotationParser;
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
+import org.xml.sax.*;
 
 /**
  * @author mustafa

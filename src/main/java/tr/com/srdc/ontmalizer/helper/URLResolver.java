@@ -3,12 +3,12 @@
  */
 package tr.com.srdc.ontmalizer.helper;
 
-import java.io.IOException;
-import java.net.URL;
-
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * @author Atakan Kaya, Mustafa Yuksel

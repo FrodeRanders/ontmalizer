@@ -1,40 +1,9 @@
 package tr.com.srdc.ontmalizer;
 
-import com.sun.xml.xsom.XSAttGroupDecl;
-import com.sun.xml.xsom.XSAttributeDecl;
-import com.sun.xml.xsom.XSAttributeUse;
-import com.sun.xml.xsom.XSComplexType;
-import com.sun.xml.xsom.XSContentType;
-import com.sun.xml.xsom.XSDeclaration;
-import com.sun.xml.xsom.XSElementDecl;
-import com.sun.xml.xsom.XSModelGroup;
-import com.sun.xml.xsom.XSModelGroupDecl;
-import com.sun.xml.xsom.XSParticle;
-import com.sun.xml.xsom.XSRestrictionSimpleType;
-import com.sun.xml.xsom.XSSchema;
-import com.sun.xml.xsom.XSSchemaSet;
-import com.sun.xml.xsom.XSSimpleType;
-import com.sun.xml.xsom.XSTerm;
-import com.sun.xml.xsom.XSType;
+import com.sun.xml.xsom.*;
 import com.sun.xml.xsom.parser.XSOMParser;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import javax.xml.parsers.SAXParserFactory;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
-import org.apache.jena.ontology.EnumeratedClass;
-import org.apache.jena.ontology.Individual;
-import org.apache.jena.ontology.OntClass;
-import org.apache.jena.ontology.OntModel;
-import org.apache.jena.ontology.OntModelSpec;
+import org.apache.jena.ontology.*;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFList;
@@ -47,12 +16,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import tr.com.srdc.ontmalizer.helper.AnnotationFactory;
-import tr.com.srdc.ontmalizer.helper.Constants;
-import tr.com.srdc.ontmalizer.helper.NamingUtil;
-import tr.com.srdc.ontmalizer.helper.SimpleTypeRestriction;
-import tr.com.srdc.ontmalizer.helper.URLResolver;
-import tr.com.srdc.ontmalizer.helper.XSDUtil;
+import tr.com.srdc.ontmalizer.helper.*;
+
+import javax.xml.parsers.SAXParserFactory;
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * @author Atakan Kaya, Mustafa Yuksel
